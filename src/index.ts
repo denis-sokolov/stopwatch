@@ -9,6 +9,8 @@ const state = (function() {
   };
 })();
 
+const isTime = (el: HTMLElement): el is HTMLTimeElement =>
+  el.tagName.toLowerCase() === "time";
 const pad = (n: number) => (n > 9 ? String(n) : "0" + n);
 
 function render() {
@@ -18,8 +20,8 @@ function render() {
   const s = secondsPassed - m * 60 - h * 3600;
   const time = (h ? [h, m, s] : m ? [m, s] : [s]).map(pad).join(`\u200b:`);
   $("[data-stopwatch-clock]", el => {
-    if (el.tagName.toLowerCase() === "time") {
-      (el as HTMLTimeElement).dateTime = `PT${h}H${m}M${s}S`;
+    if (isTime(el)) {
+      el.dateTime = `PT${h}H${m}M${s}S`;
     }
     el.innerText = time;
   });
